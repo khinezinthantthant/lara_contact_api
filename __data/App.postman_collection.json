@@ -68,7 +68,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{base_url}}/contact",
+							"raw": "{{base_url}}/contact?keyword=joh",
 							"host": [
 								"{{base_url}}"
 							],
@@ -78,8 +78,7 @@
 							"query": [
 								{
 									"key": "keyword",
-									"value": "joh",
-									"disabled": true
+									"value": "joh"
 								}
 							]
 						}
@@ -252,14 +251,6 @@
 								"2"
 							]
 						}
-					},
-					"response": []
-				},
-				{
-					"name": "search",
-					"request": {
-						"method": "GET",
-						"header": []
 					},
 					"response": []
 				},
@@ -531,58 +522,6 @@
 							"path": [
 								"favorite",
 								"2"
-							]
-						}
-					},
-					"response": []
-				}
-			],
-			"auth": {
-				"type": "bearer",
-				"bearer": [
-					{
-						"key": "token",
-						"value": "{{token}}",
-						"type": "string"
-					}
-				]
-			},
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
-					}
-				},
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
-					}
-				}
-			]
-		},
-		{
-			"name": "search",
-			"item": [
-				{
-					"name": "index",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/search",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"search"
 							]
 						}
 					},
