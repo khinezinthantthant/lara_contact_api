@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Contact extends Model
 {
-    use HasFactory;
-    
-    protected $fillable = ["name","country_code","phone_number","user_id"];
+    use HasFactory, SoftDeletes;
+    //SoftDeletes
+
+    protected $fillable = ["name", "country_code", "phone_number", "user_id"];
 }

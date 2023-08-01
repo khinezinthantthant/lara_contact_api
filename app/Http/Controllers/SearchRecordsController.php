@@ -17,31 +17,14 @@ class SearchRecordsController extends Controller
      */
     public function index()
     {
-        // return "hello";
-        $contacts = Contact::when(request()->has("keyword"), function ($query) {
-            $query->where(function (Builder $builder) {
-                $keyword = request()->keyword;
+        $searchRecords = SearchRecords::where("user_id",Auth::id())
+        ->latest("id")
+        ->limit(5)
+        ->get();
 
-                $builder->where("name", "like", "%" . $keyword . "%");
-            });
-        })->latest("id")->paginate(5)->withQueryString();;
-
-        // return $contacts;
-
-        $records = [];
-        foreach($contacts as $contact){
-            $records[] = [
-                "keyword" => $contact->keyword,
-                "user_id" => Auth::id(),
-                "created_at" => now(),
-                "updated_at" => now()
-            ];
-        }
-
-        Contact::insert($records);
-
-        // return ContactResource::collection($contacts);
-
+        return response()->json([
+            $searchRecords
+        ]);
     }
 
     /**
@@ -87,8 +70,11 @@ class SearchRecordsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(SearchRecords $searchRecords)
+
+    public function destroy(string $id)
     {
-        //
+
+        SearchRecords::findOrFail($id)->delete();
+        return response()->json([],204);
     }
 }

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
  use App\Http\Resources\ContactDetailResource;
 use App\Http\Resources\ContactResource;
 use App\Models\Contact;
+use App\Models\SearchRecords;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -22,7 +24,19 @@ class ContactController extends Controller
 
     public function index()
     {
-        $contacts = Contact::latest("id")->paginate(5)->withQueryString();
+        // $contacts = Contact::latest("id")->paginate(5)->withQueryString();
+
+        $contacts = Contact::when(request()->has("keyword"), function ($query) {
+            $query->where(function (Builder $builder) {
+                $keyword = request()->keyword;
+
+                $builder->where("name", "LIKE", "%" . $keyword . "%");
+            });
+        })
+        ->where("user_id", Auth::id())
+        ->paginate(5)
+        ->withQueryString();
+
         return ContactResource::collection($contacts);
     }
 
@@ -134,4 +148,39 @@ class ContactController extends Controller
         ],200);
     }
 
+    public function forceDelete($id)
+    {
+        $contact = Contact::withTrashed()->findOrFail($id);
+        // return $contact;
+        $contact->forceDelete();
+
+        return response()->json([
+            "message" => "successful"
+        ]);
+    }      
+
+
+    public function trash()
+    {
+        $contact = Contact::onlyTrashed()
+        ->where("user_id", auth()->id())
+        ->get();
+
+        return response()->json([
+            $contact
+        ]);
+    }
+
+    public function restore($id)
+    {
+        $contact = Contact::onlyTrashed()
+        ->where("user_id", auth()->id())
+        ->findOrFail($id);
+
+        $contact->restore();
+
+        return response()->json([
+            "message" => "successful"
+        ]);
+    }
 }
