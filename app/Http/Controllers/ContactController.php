@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\ContactResource;
 use App\Models\Contact;
 use App\Models\SearchRecords;
+use App\Models\User;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -148,11 +149,32 @@ class ContactController extends Controller
         ],200);
     }
 
+    public function multipleDelete(Request $request)
+    {
+        $ids = $request->ids;
+        return $ids;
+        Contact::whereIn("id", $ids)->delete();
+
+        return response()->json([
+            "message" => "Remove all contacts."
+        ]);
+    }
+
     public function forceDelete($id)
     {
         $contact = Contact::withTrashed()->findOrFail($id);
         // return $contact;
         $contact->forceDelete();
+
+        return response()->json([
+            "message" => "successful"
+        ]);
+    }
+
+
+    public function emptyTrash()
+    {
+        Contact::onlyTrashed()->forceDelete();
 
         return response()->json([
             "message" => "successful"

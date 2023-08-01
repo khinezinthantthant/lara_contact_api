@@ -59,6 +59,9 @@ Route::prefix("v1")->group(function () {
 
         Route::controller(ContactController::class)->group(function(){
             Route::delete('contact-force-delete/{id}',"forceDelete")->name("forceDelete");
+            Route::post('multiple-delete',"multipleDelete")->name("multipleDelete");
+            Route::delete('empty-trash',"emptyTrash")->name("emptyTrash");
+
             Route::get('contact-trash','trash')->name("trash");
             Route::post("contact-restore/{id}","restore")->name("restore");
             Route::post('restore-all',"restoreAll")->name("restoreAll");
