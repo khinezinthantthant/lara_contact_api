@@ -152,7 +152,7 @@ class ContactController extends Controller
     public function multipleDelete(Request $request)
     {
         $ids = $request->ids;
-        return $ids;
+        // return $ids;
         Contact::whereIn("id", $ids)->delete();
 
         return response()->json([
