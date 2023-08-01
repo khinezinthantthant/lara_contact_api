@@ -61,7 +61,7 @@ Route::prefix("v1")->group(function () {
             Route::delete('contact-force-delete/{id}',"forceDelete")->name("forceDelete");
             Route::get('contact-trash','trash')->name("trash");
             Route::post("contact-restore/{id}","restore")->name("restore");
-            // Route::get('restore-all',"restoreAll")->name("restoreAll");
+            Route::post('restore-all',"restoreAll")->name("restoreAll");
         });
 
     });

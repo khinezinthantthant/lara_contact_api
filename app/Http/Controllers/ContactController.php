@@ -157,7 +157,7 @@ class ContactController extends Controller
         return response()->json([
             "message" => "successful"
         ]);
-    }      
+    }
 
 
     public function trash()
@@ -183,4 +183,17 @@ class ContactController extends Controller
             "message" => "successful"
         ]);
     }
+
+    public function restoreAll()
+    {
+        $contact = Contact::onlyTrashed()
+        ->where("user_id", auth()->id());
+
+        $contact->restore();
+
+        return response()->json([
+            "message" => "restore all contact successful"
+        ]);
+    }
+
 }
